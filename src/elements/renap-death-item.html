@@ -1,0 +1,265 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--import paper components-->
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html"> 
+
+<dom-module id="renap-death-item">
+	<template>
+
+		<!-- _________________      STYLE     _________________-->
+		<style>
+			:host {
+				display: block;
+			}
+			paper-card{
+				padding: 1em;
+				width: 100%;
+				border-radius: 3px;
+				border-color: #333;
+				margin-bottom: 8px;
+				text-align: left;
+			}
+			paper-input{
+				height: 41px;
+				font-size: 5px;
+			}
+			.title{
+				font-size: 20px;
+				@apply(--paper-font-common-base);
+			}
+			.primary {
+				font-size: 16px;
+				font-weight: bold;
+				@apply(--paper-font-common-base);
+			}
+			.second {
+				font-size: 12px;
+				color: #34495E;
+				@apply(--paper-font-common-base);
+			}
+		</style>
+
+		<!-- _________________  PAPER CARD  _________________-->
+		<div>
+			<paper-card  on-tap="select_Lesson" background="../img/background.png">
+				<div class="grid-block" style="background-image: url('../img/background.png'); width: 100%; height: 210%;">
+			  		<div class="card-content">	
+			  			<div style="margin-top: 15px;" id="body">
+							<table>
+								<tr>
+									<th style="width: 25%;">
+										<img src="../img/renap_logo.PNG">			
+										<div class="second">
+											No. de correlativo: {{generateID(1000000000000)}}
+										</div>		
+									</th>	
+									<th style="width: 50%;">
+										<div style="font-size: 11px;">
+											Registro Nacional de las Personas
+										</div>
+										<div style="font-size: 12px;">
+											República de Guatemala
+										</div>
+									</th>
+									<th style="width: 25%;">
+										<div style="color:red; font-weight: bold;">{{generateID(1000000000)}}</div>
+
+										<img src="../img/firma.png">	
+									</th>
+								</tr>
+
+								<tr>
+									<th>
+												
+									</th>	
+									<th>
+										<div style="font-size: 14px;">
+											Registro Civil de las Personas
+										</div>
+										<div style="font-size: 14px;">
+											Certificado de Defunción
+										</div>  
+
+									</th>
+									<th>
+													
+									</th>
+								</tr>
+							</table>
+
+																					
+								
+								
+
+							
+							<div>
+				    			<!--ITEM-->
+
+								<div class="primary" style="border-top: 5px solid: #34495E; margin-top: 20px;">
+									Datos del Fallecido
+								</div>
+							
+								<paper-input always-float-label label="CUI " value="[[item.cui]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Nombre(s) " value="[[item.nombre]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Apellido(s) " value="[[item.apellido]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Genero " value="[[getGender(item.genero)]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Fecha de Nacimiento " value="[[getDate(item.fechaNacimiento)]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Pais " value="[[item.pais]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Departamento " value="[[item.departamento]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Municipio " value="[[item.municipio]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Lugar de Nacimiento " value="[[item.lugarNacimiento]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Estado Civil " value="[[item.estadoCivil]]" readonly="true"></paper-input>
+
+
+							
+								<div class="primary" style="border-top: 5px solid: #34495E; margin-top: 20px;">
+									Datos del Conyuge
+								</div>
+								<paper-input always-float-label label="Nombre(s) conyuge" value="[[item.nombreConyuge]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Apellido(s) conyuge" value="[[item.apellidoConyuge]]" readonly="true"></paper-input>
+							
+
+
+								<div class="primary" style="border-top: 5px solid: #34495E; margin-top: 20px;">
+									Datos del Compareciente
+								</div>
+								<paper-input always-float-label label="CUI compareciente" value="[[item.cuiCompareciente]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Nombre compareciente" value="[[item.nombreCompareciente]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Apellido compareciente" value="[[item.apellidoCompareciente]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Pais compareciente" value="[[item.paisCompareciente]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Departamento compareciente" value="[[item.departamentoCompareciente]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Municipio compareciente" value="[[item.municipioCompareciente]]" readonly="true"></paper-input>
+
+								<div class="primary" style="border-top: 5px solid: #34495E; margin-top: 20px;">
+									Datos de la Defunción
+								</div>
+								<paper-input always-float-label label="Pais  de Defunción" value="[[item.paisDefuncion]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Departamento  de Defunción" value="[[item.departamentoDefuncion]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Lugar  de Defunción" value="[[item.lugarDefuncion]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Fecha de Defunción compareciente" value="[[getDate(item.fechaDefuncion)]]" readonly="true"></paper-input>
+								<paper-input always-float-label label="Causa" value="[[item.causa]]" readonly="true"></paper-input>
+								<br>
+								<br>
+								<div style="margin-bottom: 45px;">
+									<img src="../img/sello.png" height="75" width="75">
+									<span style="float: right;">
+										<img src="../img/codigoqr.png">
+									</span>
+								</div>
+								<div style="font-size: 8px;">
+									www.renap.gob.gt
+								</div>
+							</div>
+			    			
+						</div>	
+			  		</div>
+			  	</div>
+			</paper-card>
+		</div>
+		
+	</template>
+	<script>
+		Polymer({
+//--------------------   POLYMER   -----------------------------------
+			is: 'renap-death-item'
+			/*
+{
+"cuiHombre": 20131413,
+"nombreHombre": "Carlos Humberto",
+"apellidoHombre": "Gómez García",
+"paisHombre": "Guatemala",
+"departamentoHombre": "Guatemala",
+"municipioHombre": "Guatemala",
+"cuiMujer": 242302342,
+"nombreMujer": "Maida",
+"apellidoMujer": "Rodríguez",
+"paisMujer": "Guatemala",
+"departamentoMujer": "Retalhuleu",
+"municipioMujer": "San Jose",
+"municipio": "Guatemala",
+"lugarDefunción": "Ciudad de Guatemala",
+"fechaDefunción": "14-01-1995",
+"regimenMatrimonial": "MANCOMUNADO",
+"status": 1,
+"mensaje": "ok"
+
+
+function printPage(id)
+{
+   var html="<html>";
+   html+= document.getElementById(id).innerHTML;
+
+   html+="</html>";
+
+   var printWin = window.open('','','left=0,top=0,width=1,height=1,toolbar=0,scrollbars=0,status  =0');
+   printWin.document.write(html);
+   printWin.document.close();
+   printWin.focus();
+   printWin.print();
+   printWin.close();
+}
+
+}
+			*/,
+			getDate: function(utc)
+			{
+				var auxUTC = parseInt(utc);
+				var date = new Date(auxUTC);
+				return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+			},
+			getGender:function(id){
+				if(id==1 || id=="1")
+				{
+					return "MASCULINO";
+				}
+				else if(id==0 || id== "0")
+				{
+					return "FEMENINO";
+				}
+				else 
+				{
+					return id;
+				}
+			},
+			generateID: function(max){
+				//var max = 1000000000;
+				var min = 100000000;
+				return Math.floor(Math.random() * (max - min) + min);
+			},
+			printdeath: function(){
+				this.fire('printPage');
+				window.print();
+				/*var html = this.$.body.innerHTML;
+				var printWin = window.open('','','left=0,top=0,width=100%,height=100%,toolbar=0,scrollbars=0,status  =0');
+			 	printWin.document.write(html);
+			   	printWin.document.close();
+			   	printWin.focus();
+			   	printWin.print();
+			   	printWin.close();
+				*/
+				/*var html="<html><body bgcolor=#E1D4C3>";
+		    	html+="<img src=\"../img/renap_logo.PNG\">";
+		    	html+="<img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTQzqRneQWyBKd7WJcO_OnrI3XFf-ovJtKz89gBzvAMMSHSTtgWg\">";
+		    	html+="<span style=\"float:right; color:red;\">";
+		    	html+="2423423001";
+		    	html+="</span>"
+		    	html+="<center>";
+		    	html+="<h1>Registro Nacional de las Personas</h1>";
+		    	html+="<h3>República de Guatemala</h3>";
+		       	html+="</center>";
+			   	html+="</body></html>";
+
+			   	var printWin = window.open('','','left=0,top=0,width=100%,height=100%,toolbar=0,scrollbars=0,status  =0');
+			   	printWin.document.write(html);
+			   	printWin.document.close();
+			   	printWin.focus();
+			   	printWin.print();
+			   	printWin.close();
+			   	*/	
+			}
+		}
+
+		);
+	</script>
+</dom-module>

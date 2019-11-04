@@ -1,0 +1,213 @@
+<!--paper elements-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
+<!--iron elements-->
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<!--vaadin elements-->
+<link rel="import" href="../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+
+<!--My elements-->
+<link rel="import" href="../elements/twitter-tweet.html">
+<link rel="import" href="../elements/twitter-info.html">
+<link rel="import" href="../elements/twitter-info-popular.html">
+<link rel="import" href="../elements/twitter-query.html">
+
+<dom-module id="twitter-dashboard">
+	<template>
+		<style is="custom-style">
+			paper-toolbar {
+         		--paper-toolbar-background: #FFFFFF;
+         		--paper-toolbar-color: var(--paper-gray-900);
+      		}
+      		paper-input {
+      			margin: 1em;
+      		}
+      		paper-header-panel {
+      			--background-color: blue;
+      		}
+      		vaadin-combo-box{
+				margin: 1em;
+				padding: 0.5em;
+			}
+			paper-button{
+				background-color: #D2AA42;
+			}
+
+		</style>
+		<paper-header-panel class="flex" style="background-color: #D7DBDD;">
+			<paper-toolbar id="toolbar">>
+				<paper-icon-button icon="menu" on-tap="togglePanel" paper-drawer-toggle></paper-icon-button>
+				<div class="title"><span style="color: gray; font-weight: bold; font-size: 24;">DASHBOARD</span></div>
+				<paper-icon-button on-tap="ready" icon="refresh"></paper-icon-button>
+			</paper-toolbar>
+			<div style="margin-top: 35px;">
+				<center>
+				<table class="egt">
+				<tr>
+					<td>
+						<h2>Últimos Tweets</h2>
+					</td>
+					<td  rowspan="6" style="width: 2%;">
+						
+					</td>
+					<td>
+						<h2 align="right">Información de Tweets</h2>
+					</td>
+				</tr>
+				<tr>
+					<td rowspan="6" style="width: 30%; min-width: 300px;">
+						<div>
+							<iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold" lower-threshold="10">
+								<iron-list as="item" scroll-target="html" id="tweetList">
+									<template>
+										<twitter-tweet item='[[item]]'></twitter-tweet>
+									</template>
+								</iron-list>
+								<div id="msgLoad">
+									<center>
+										No hay mas lecciones
+									</center>
+								</div>
+							</iron-scroll-threshold>
+						</div>
+						
+					</td>
+					<td style="width: 45%;">
+						<div>
+							<twitter-info></twitter-info>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td style="width: 45%;">
+						<h2 align="right">Tweets Populares</h2>
+					</td>
+				</tr>
+
+				<tr>
+					<td style="width: 45%;">
+						<div>
+							<twitter-info-popular></twitter-info-popular>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td style="width: 45%;">
+						<h2 align="right">Consultas</h2>
+					</td>
+				</tr>
+
+				<tr>
+					<td style="width: 45%;">
+						<div>
+							<twitter-query></twitter-query>
+						</div>
+					</td>
+				</tr>
+				</table>
+				</center>
+			</div>
+
+			<paper-toast id="toastMessage" duration="1000">
+			</paper-toast>
+		</paper-header-panel>
+		<iron-ajax id="ajax"
+		    content-type="application/json" 
+		    body={{bodyRequest}}
+		    url= {{serverURL}}
+		    method="POST"
+		    on-response="response"
+		    on-error="callbackError"
+		    handle-as="jsonp"
+		    debounce-duration="300">  	
+		</iron-ajax>
+	</template>
+	<script>
+		Polymer({
+			is: 'twitter-dashboard',
+			listeners:{
+				'printPage': 'printPage',
+			},
+			properties: {
+				bodyRequest:{
+		            type: String,
+		            value: ""
+		        },
+		        loadingData:{
+					type: Boolean,
+					value: true
+				},
+				serverURL:{
+					type: String,
+					value: "https://us-central1-elated-scope-174804.cloudfunctions.net/function-2"
+				}
+		    },
+		    ready: function(){
+		    	array = [
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi primer #Tweet"
+		    					},
+		    					{
+		    						name: "Hans G",
+		    						alias: "@hansSolo",
+		    						tweet: "Es dinamita pura #DAAAM"
+		    					},
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es un mensaje de los mas largos que pueden existir dentro de la plataforma para validar la longitud en el contenido de cada Tweet"
+		    					},
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi primer #Tweet"
+		    					},
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi primer #Tweet"
+		    					},
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi primer #Tweet"
+		    					},
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi primer #Tweet"
+		    					},
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi primer #Tweet"
+		    					},
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi primer #Tweet"
+		    					},
+		    					{
+		    						name: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi primer #Tweet"
+		    					}
+		    				];
+
+		    	this.$.tweetList.items = array;
+				this.$.tweetList.notifyResize();
+
+		    }
+		});
+	</script>
+</dom-module>

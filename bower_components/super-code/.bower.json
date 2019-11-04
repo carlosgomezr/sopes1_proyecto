@@ -1,0 +1,25 @@
+{
+  "name": "super-code",
+  "main": "super-code.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "codemirror": "^5.18.2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/super-elements/super-code",
+  "version": "1.0.0",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.0",
+    "commit": "be076bb39b981494fc696685372bc0ccbdf54ce7"
+  },
+  "_source": "https://github.com/super-elements/super-code.git",
+  "_target": "^1.0.0",
+  "_originalSource": "super-elements/super-code"
+}

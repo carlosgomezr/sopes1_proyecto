@@ -1,0 +1,7 @@
+{
+  "name": "twitter-client-app",
+  "short_name": "twitter-client-app",
+  "description": "twitter-client-app",
+  "start_url": "/",
+  "display": "standalone"
+}

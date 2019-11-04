@@ -1,0 +1,132 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--import paper components-->
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html"> 
+
+<dom-module id="renap-info-item">
+	<template>
+
+		<!-- _________________      STYLE     _________________-->
+		<style>
+			:host {
+				display: block;
+			}
+			paper-card{
+				padding: 3em;
+				width: 100%;
+				border-radius: 3px;
+				border-color: #333;
+				margin-bottom: 8px;
+				text-align: left;
+			}
+			paper-input{
+				height: 43px;
+				font-size: 5px;
+			}
+			.title{
+				font-size: 20px;
+				font-weight: bold;
+				@apply(--paper-font-common-base);
+			}
+			.primary {
+				font-size: 16px;
+				font-weight: bold;
+				@apply(--paper-font-common-base);
+			}
+			.second {
+				font-size: 12px;
+				color: #34495E;
+				@apply(--paper-font-common-base);
+			}
+			#printButton{
+				float:right;
+			}
+		</style>
+
+		<!-- _________________  PAPER CARD  _________________-->
+		<div>
+			<paper-card>
+				<div>
+					<div style="font-size: 36px; font-family: Arial;">
+						RENAP CENTRAL
+					<div>
+					<div style="color: gray;">
+						 	<div style="font-size: 18px; font-family: Arial; margin-top: 25px; color: gray;">
+						 		DIRECCIÓN:
+					 		</dir>
+					 		<div style="font-size: 14px; font-family: Arial; margin-top: 15px; color: gray;">
+						 		<paper-icon-button  icon="explore"></paper-icon-button>
+									CALZADA ROOSVELT 13-46 ZONA 7, GUATEMALA, GUATEMALA
+					 		</dir>
+							<br>
+							<div style="font-size: 18px; font-family: Arial; margin-top: 15px; color: gray;">
+						 		CALL CENTERS:
+							</dir>
+					 		<div style="font-size: 14px; font-family: Arial; margin-top: 15px; color: gray;">
+						 		<paper-icon-button  icon="communication:call"></paper-icon-button>
+								1516
+					 		</dir>
+							<br>
+							<div style="font-size: 18px; font-family: Arial; margin-top: 15px; color: gray;">
+						 		HORARIO DE ATENCIÓN:
+							</dir>
+					 		<div style="font-size: 14px; font-family: Arial; margin-top: 15px; color: gray;">
+						 		<paper-icon-button  icon="watch-later"></paper-icon-button>
+								LUNES A VIERNES DE 08:00 HORAS A 17:00 HORAS
+					 		</dir>
+					</div>
+
+			  	</div>
+			</paper-card>
+		</div>
+		
+	</template>
+	<script>
+		Polymer({
+//--------------------   POLYMER   -----------------------------------
+			is: 'renap-info-item'
+			/*
+{
+	"cui": 20131436789,
+	"nombre": "Carlos Estuardo",
+	"apellido": "Gómez Rodríguez",
+	"genero": "Masculino",
+	"fechaNacimiento": "17/01/1996",
+	"pais": "GUATEMALA",
+	"departamento": "Guatemala", 
+	"municipio": "San Miguel Petapa",
+	"lugarNacimiento": "Ciudad de Guatemala",
+	"cuiPadre": 14367903192,
+	"nombrePadre": "Carlos Humberto",
+	"apellidoPadre": "Gómez García",
+	"fechaNacimientoPadre": "27/08/1973",
+	"paisPadre": "GUATEMALA",
+	"departamentoPadre": "Guatemala",
+	"municipioPadre": "Ciudad de Guatemala",
+	"cuiMadre": 100190922423,
+	"nombreMadre": "Maida Yanet",
+	"apellidoMadre": "Rodríguez Gómez",
+	"fechaNacimientoMadre": "08/04/1975",
+	"paisMadre": "GUATEMALA",
+	"departamentoMadre": "Retalhuleu",
+	"municipioMadre": "San Jose",
+	"status": 1,
+	"mensaje": "ok",
+	"flag": 3
+}
+			*/,
+			generateID: function(max){
+				//var max = 1000000000;
+				var min = 100000000;
+				return Math.floor(Math.random() * (max - min) + min);
+			},
+			printRegister: function(){
+				this.fire('printPage');
+				window.print();	
+			}
+		}
+
+		);
+	</script>
+</dom-module>

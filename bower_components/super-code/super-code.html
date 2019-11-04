@@ -1,0 +1,135 @@
+<link rel="import" href="../polymer/polymer.html" />
+<script src="../codemirror/lib/codemirror.js"></script>
+<script src="../codemirror/mode/javascript/javascript.js"></script>
+<script src="../codemirror/mode/xml/xml.js"></script>
+<script src="../codemirror/mode/css/css.js"></script>
+<script src="./formatting.js"></script>
+<script src="../codemirror/mode/htmlmixed/htmlmixed.js"></script>
+
+<script src="../codemirror/addon/fold/foldcode.js"></script>
+<script src="../codemirror/addon/fold/foldgutter.js"></script>
+<script src="../codemirror/addon/fold/brace-fold.js"></script>
+<script src="../codemirror/addon/fold/comment-fold.js"></script>
+<script src="../codemirror/addon/fold/indent-fold.js"></script>
+<script src="../codemirror/addon/fold/xml-fold.js"></script>
+
+
+<!--
+`super-code`
+
+
+@demo demo/index.html
+-->
+
+<dom-module id="super-code">
+  <link rel="import" type="css" href="../codemirror/lib/codemirror.css">
+  <!--For Code Folding -->
+  <link rel="import" type="css" href="../codemirror/addon/fold/foldgutter.css">
+
+  <template>
+    <style>
+      :host {
+
+      }
+    </style>
+    <textarea id="textarea"></textarea>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'super-code',
+      properties: {
+        value: {
+          type: String,
+          notify: true,
+          observer: '_valueChanged',
+          // computed: 'computedValue()'
+        },
+        /**
+         * The mode to use. When not given, this will default to the first mode that was loaded.
+         * It may be a string, which either simply names the mode or is a MIME type associated with the mode.
+         * Alternatively, it may be an object containing configuration options for the mode,
+         * with a name property that names the mode (for example {name: "javascript", json: true}).
+         * The demo pages for each mode contain information about what configuration parameters the mode supports.
+         * You can ask CodeMirror which modes and MIME types have been defined by inspecting the CodeMirror.modes and CodeMirror.mimeModes objects.
+         * The first maps mode names to their constructors, and the second maps MIME types to mode specs.
+         */
+        mode: {
+          type: String,
+          value: 'htmlmixed'
+        },
+        /**
+         * The theme to style the editor with. You must make sure the CSS file defining the corresponding .cm-s-[name] styles is loaded
+         * (see the theme directory in the distribution). The default is "default", for which colors are included in codemirror.css.
+         * It is possible to use multiple theming classes at once—for example "foo bar" will assign both the cm-s-foo
+         * and the cm-s-bar classes to the editor.
+         */
+        theme: {
+          type: String
+        },
+
+        /**
+         * The width of a tab character.
+         */
+        tabSize: {
+          type: Number,
+          value: 4
+        },
+
+        /**
+         * Whether, when indenting, the first N*tabSize spaces should be replaced by N tabs.
+         */
+        indentWithTabs: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Flag to signal weather the observerable `_valueChanged` should be
+         * called or not. Useful since setting any value to the
+         * CodeMirror Editor will reset its cursor.
+         */
+        _isValueChanged: {
+          type: Boolean,
+          value: true
+        }
+      },
+      ready: function () {
+        var self = this;
+
+        // Initialise an instance of the CodeMirror editor
+        this.editor = CodeMirror.fromTextArea(this.$.textarea, {
+					lineNumbers: true,
+					value: self.value,
+          mode: self.mode,
+
+          // For Code Folding
+          foldGutter: true,
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+				});
+
+        // As new code is written on the editor, update the `value` property of the
+        // host element. But we don't want to trigger the observer `_valueChanged` since
+        // Codemirror will reposition the cursor. So we set a flag telling the `_valueChanged`
+        // not to get called! http://stackoverflow.com/a/34577093/950039
+        this.editor.on('change', () => {
+          self._isValueChanged = false;
+          self.value = self.editor.getValue()
+          self._isValueChanged = true;
+        })
+
+        // TODO Fix this to improve first time rendering performance
+        this.editor.refresh();
+
+      },
+      _valueChanged: function (newValue, oldValue) {
+        if (this.editor && (this._isValueChanged)){
+          this.editor.setValue(newValue)
+          this.editor.autoFormatRange({ch:0, line:0}, {ch: this.value.length, line: this.editor.lineCount()});
+          this.editor.setSelection({ch:this.value.length, line:this.editor.lineCount()}, {ch:this.value.length, line:this.editor.lineCount()});
+        }
+      }
+    });
+  </script>
+</dom-module>

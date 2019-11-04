@@ -1,0 +1,30 @@
+<!--doctype html-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Tweets</title>
+    <meta name="description" content="tracker-task description">
+
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/src/img/renap.ico"/>
+   
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="/src/twitter-client-app/twitter-client-app.html">
+    <script src="/src/js/APP.js"></script>
+    <style is="custom-style"> 
+      :root {
+        --primary-color: var(--paper-black);
+        --dark-theme-text-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <!--<login-element id="mainlogin"></login-element> -->
+    <twitter-client-app></twitter-client-app>
+
+
+  </body>
+</html>
