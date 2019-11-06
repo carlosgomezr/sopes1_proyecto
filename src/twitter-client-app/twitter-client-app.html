@@ -19,6 +19,8 @@
 
 <!--SCREENS -->
 <link rel="import" href="../screens/twitter-dashboard.html">
+<link rel="import" href="../screens/twitter-user.html">
+<link rel="import" href="../screens/twitter-tag.html">
 
 
 <dom-module id="twitter-client-app">
@@ -59,7 +61,8 @@
       <paper-header-panel main>
         <iron-pages selected="{{selected}}" id="pages">
           <twitter-dashboard></twitter-dashboard>
-          <twitter-dashboard></twitter-dashboard>
+          <twitter-user></twitter-user>
+          <twitter-tag></twitter-tag>
         </iron-pages>
         <div class="second-screens" hidden></div>
       </paper-header-panel>

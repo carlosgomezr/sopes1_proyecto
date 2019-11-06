@@ -15,10 +15,9 @@
 <!--My elements-->
 <link rel="import" href="../elements/twitter-tweet.html">
 <link rel="import" href="../elements/twitter-info.html">
-<link rel="import" href="../elements/twitter-info-popular.html">
-<link rel="import" href="../elements/twitter-query.html">
+<link rel="import" href="../elements/twitter-user-info.html">
 
-<dom-module id="twitter-dashboard">
+<dom-module id="twitter-user">
 	<template>
 		<style is="custom-style">
 			paper-toolbar {
@@ -46,7 +45,7 @@
 		<paper-header-panel class="flex" style="background-color: #e1f5fe;">
 			<paper-toolbar id="toolbar">>
 				<paper-icon-button icon="menu" on-tap="togglePanel" paper-drawer-toggle></paper-icon-button>
-				<div class="title"><span style="color: gray; font-weight: bold; font-size: 24;">Dashboard</span></div>
+				<div class="title"><span style="color: gray; font-weight: bold; font-size: 24;">Usuario</span></div>
 				<paper-icon-button on-tap="ready" icon="refresh"></paper-icon-button>
 			</paper-toolbar>
 			<div style="margin-top: 35px;">
@@ -54,17 +53,19 @@
 				<table class="egt">
 				<tr>
 					<td>
-						<h2>Últimos Tweets</h2>
+						<h2>Información Usuario</h2>
+						<twitter-user-info></twitter-user-info>
 					</td>
 					<td  rowspan="6" style="width: 2%;">
 						
 					</td>
 					<td>
-						<h2>Información de Tweets</h2>
+						
 					</td>
 				</tr>
 				<tr>
 					<td rowspan="6" style="width: 30%; min-width: 300px;">
+						<h2>Últimos 3 Tweets</h2>
 						<div>
 							<iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold" lower-threshold="10">
 								<iron-list as="item" scroll-target="html" id="tweetList">
@@ -80,39 +81,6 @@
 							</iron-scroll-threshold>
 						</div>
 						
-					</td>
-					<td style="width: 45%;">
-						<div>
-							<twitter-info></twitter-info>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td style="width: 45%;">
-						<h2>Tweets Populares</h2>
-					</td>
-				</tr>
-
-				<tr>
-					<td style="width: 45%;">
-						<div>
-							<twitter-info-popular></twitter-info-popular>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td style="width: 45%;">
-						<h2>Consultas</h2>
-					</td>
-				</tr>
-
-				<tr>
-					<td style="width: 45%;">
-						<div>
-							<twitter-query></twitter-query>
-						</div>
 					</td>
 				</tr>
 				</table>
@@ -135,7 +103,7 @@
 	</template>
 	<script>
 		Polymer({
-			is: 'twitter-dashboard',
+			is: 'twitter-user',
 			listeners:{
 			},
 			properties: {
@@ -160,55 +128,21 @@
 		    						tweet: "Este es mi primer #Tweet"
 		    					},
 		    					{
-		    						nombre: "Hans G",
-		    						alias: "@hansSolo",
-		    						tweet: "Es dinamita pura #DAAAM"
+		    						nombre: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi segundo #Tweet"
 		    					},
 		    					{
-		    						nombre: "Fernando P",
-		    						alias: "@ferchos_ama",
-		    						tweet: "nyco nyco neeeee~~~"
-		    					},
-		    					{
-		    						nombre: "Bot 1",
-		    						alias: "@bot1",
-		    						tweet: "No soy un boot #1"
-		    					},
-		    					{
-		    						nombre: "Bot 2",
-		    						alias: "@bot2",
-		    						tweet: "No soy un boot #2"
-		    					},
-		    					{
-		    						nombre: "Bot 3",
-		    						alias: "@bot3",
-		    						tweet: "No soy un boot #3"
-		    					},
-		    					{
-		    						nombre: "Bot 4",
-		    						alias: "@bot4",
-		    						tweet: "No soy un boot #4"
-		    					},
-		    					{
-		    						nombre: "Bot 5",
-		    						alias: "@bot5",
-		    						tweet: "No soy un boot #5"
-		    					},
-		    					{
-		    						nombre: "Bot 6",
-		    						alias: "@bot6",
-		    						tweet: "No soy un boot #6"
-		    					},
-		    					{
-		    						nombre: "Bot 7",
-		    						alias: "@bot7",
-		    						tweet: "No soy un boot #7"
+		    						nombre: "Carlos G",
+		    						alias: "@carlos001",
+		    						tweet: "Este es mi tercer #Tweet"
 		    					}
 		    				];
 
 		    	this.$.tweetList.items = array;
 				this.$.tweetList.notifyResize();
-			 }
+
+		    }
 		});
 	</script>
 </dom-module>
