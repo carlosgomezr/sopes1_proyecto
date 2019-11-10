@@ -1,0 +1,231 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--import paper components-->
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html"> 
+
+<dom-module id="renap-divorced-item">
+	<template>
+
+		<!-- _________________      STYLE     _________________-->
+		<style>
+			:host {
+				display: block;
+			}
+			paper-card{
+				padding: 1em;
+				width: 100%;
+				border-radius: 3px;
+				border-color: #333;
+				margin-bottom: 8px;
+				text-align: left;
+			}
+			paper-input{
+				height: 43px;
+				font-size: 5px;
+			}
+			.title{
+				font-size: 20px;
+				@apply(--paper-font-common-base);
+			}
+			.primary {
+				font-size: 16px;
+				font-weight: bold;
+				@apply(--paper-font-common-base);
+			}
+			.second {
+				font-size: 12px;
+				color: #34495E;
+				@apply(--paper-font-common-base);
+			}
+		</style>
+
+		<!-- _________________  PAPER CARD  _________________-->
+		<div>
+			<paper-card on-tap="select_Lesson" background="../img/background.png">
+				<div class="grid-block" style="background-image: url('../img/background.png'); width: 100%; height: 210%;">
+			  		<div class="card-content">	
+			  			<div style="margin-top: 15px;" id="body">
+							<table>
+								<tbody><tr>
+									<th style="width: 25%;">
+										<img src="../img/renap_logo.PNG">			
+										<div class="second">
+											No. de correlativo: {{generateID(1000000000000)}}
+										</div>		
+									</th>	
+									<th style="width: 50%;">
+										<div style="font-size: 11px;">
+											Registro Nacional de las Personas
+										</div>
+										<div style="font-size: 12px;">
+											República de Guatemala
+										</div>
+									</th>
+									<th style="width: 25%;">
+										<div style="color:red; font-weight: bold;">{{generateID(1000000000)}}</div>
+
+										<img src="../img/firma.png">	
+									</th>
+								</tr>
+
+								<tr>
+									<th>
+												
+									</th>	
+									<th>
+										<div style="font-size: 14px;">
+											Registro Civil de las Personas
+										</div>
+										<div style="font-size: 14px;">
+											Certificado de Divorcio
+										</div>  
+
+									</th>
+									<th>
+													
+									</th>
+								</tr>
+							</tbody></table>
+
+																					
+								
+								
+
+							
+							<div>
+				    			<!--ITEM-->
+
+								<div class="primary" style="border-top: 5px solid: #34495E; margin-top: 20px;">
+									Datos del Esposo
+								</div>
+							
+								<paper-input always-float-label="" label="CUI esposo" value="[[item.cuiHombre]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Nombre(s) esposo" value="[[item.nombreHombre]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Apellido(s) esposo" value="[[item.apellidoHombre]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Pais esposo" value="[[item.paisHombre]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Departamento esposo" value="[[item.departamentoHombre]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Municipio esposo" value="[[item.municipioHombre]]" readonly="true"></paper-input>
+
+
+							
+								<div class="primary" style="border-top: 5px solid: #34495E; margin-top: 20px;">
+									Datos de la Esposa
+								</div>
+								<paper-input always-float-label="" label="CUI esposa" value="[[item.cuiMujer]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Nombre(s) esposa" value="[[item.nombreMujer]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Apellido(s) esposa" value="[[item.apellidoMujer]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Pais esposa" value="[[item.paisMujer]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Departamento esposa" value="[[item.departamentoMujer]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Municipio esposa" value="[[item.municipioMujer]]" readonly="true"></paper-input>
+
+
+
+								<div class="primary" style="border-top: 5px solid: #34495E; margin-top: 20px;">
+									Datos del Divorcio
+								</div>
+								<paper-input always-float-label="" label="Municipio" value="[[item.municipio]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Lugar de Divorcio" value="[[item.lugarDivorcio]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Fecha de Divorcio" value="[[getDate(item.fechaDivorcio)]]" readonly="true"></paper-input>
+								<paper-input always-float-label="" label="Regimen de Divorcio" value="[[item.regimenMatrimonial]]" readonly="true"></paper-input>
+								<br>
+								<br>
+								<div style="margin-bottom: 45px;">
+									<img src="../img/sello.png" height="75" width="75">
+									<span style="float: right;">
+										<img src="../img/codigoqr.png">
+									</span>
+								</div>
+								<div style="font-size: 8px;">
+									www.renap.gob.gt
+								</div>
+							</div>
+			    			
+						</div>	
+			  		</div>
+			  	</div>
+			</paper-card>
+		</div>
+		
+	</template>
+	<script>Polymer({
+  //--------------------   POLYMER   -----------------------------------
+  is: 'renap-divorced-item'
+  /*
+  {
+  "cuiHombre": 20131413,
+  "nombreHombre": "Carlos Humberto",
+  "apellidoHombre": "Gómez García",
+  "paisHombre": "Guatemala",
+  "departamentoHombre": "Guatemala",
+  "municipioHombre": "Guatemala",
+  "cuiMujer": 242302342,
+  "nombreMujer": "Maida",
+  "apellidoMujer": "Rodríguez",
+  "paisMujer": "Guatemala",
+  "departamentoMujer": "Retalhuleu",
+  "municipioMujer": "San Jose",
+  "municipio": "Guatemala",
+  "lugarDivorcio": "Ciudad de Guatemala",
+  "fechaDivorcio": "14-01-1995",
+  "regimenMatrimonial": "MANCOMUNADO",
+  "status": 1,
+  "mensaje": "ok"
+  function printPage(id)
+  {
+  var html="<html>";
+  html+= document.getElementById(id).innerHTML;
+   html+="</html>";
+   var printWin = window.open('','','left=0,top=0,width=1,height=1,toolbar=0,scrollbars=0,status  =0');
+  printWin.document.write(html);
+  printWin.document.close();
+  printWin.focus();
+  printWin.print();
+  printWin.close();
+  }
+  }
+  */
+  ,
+  getDate: function (utc) {
+    var auxUTC = parseInt(utc);
+    var date = new Date(auxUTC);
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+  },
+  generateID: function (max) {
+    //var max = 1000000000;
+    var min = 100000000;
+    return Math.floor(Math.random() * (max - min) + min);
+  },
+  printdivorced: function () {
+    this.fire('printPage');
+    window.print();
+    /*var html = this.$.body.innerHTML;
+    var printWin = window.open('','','left=0,top=0,width=100%,height=100%,toolbar=0,scrollbars=0,status  =0');
+    	printWin.document.write(html);
+      	printWin.document.close();
+      	printWin.focus();
+      	printWin.print();
+      	printWin.close();
+    */
+
+    /*var html="<html><body bgcolor=#E1D4C3>";
+      	html+="<img src=\"../img/renap_logo.PNG\">";
+      	html+="<img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTQzqRneQWyBKd7WJcO_OnrI3XFf-ovJtKz89gBzvAMMSHSTtgWg\">";
+      	html+="<span style=\"float:right; color:red;\">";
+      	html+="2423423001";
+      	html+="</span>"
+      	html+="<center>";
+      	html+="<h1>Registro Nacional de las Personas</h1>";
+      	html+="<h3>República de Guatemala</h3>";
+         	html+="</center>";
+      	html+="</body></html>";
+       	var printWin = window.open('','','left=0,top=0,width=100%,height=100%,toolbar=0,scrollbars=0,status  =0');
+      	printWin.document.write(html);
+      	printWin.document.close();
+      	printWin.focus();
+      	printWin.print();
+      	printWin.close();
+      	*/
+  }
+});</script>
+</dom-module>

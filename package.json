@@ -1,0 +1,29 @@
+{
+    "name": "ubicacion",
+    "version": "1.0.0",
+    "description": "servicio encargado de la ubicacion de los pilotos",
+    "main": "server.js",
+    "scripts": {
+      "test": "node server.js",
+      "start":"node server.js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/byronjl2003/SA_Tarea2.git"
+    },
+    "keywords": [
+      "Microservicio",
+      "Ubicacion",
+      "Tarea2"
+    ],
+    "author": "byron lopez",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/byronjl2003/SA_Tarea2/issues"
+    },
+    "homepage": "https://github.com/byronjl2003/SA_Tarea2#readme",
+    "dependencies": {
+      "express": "^4.17.1",
+      "socket.io": "^2.3.0"
+    }
+  }

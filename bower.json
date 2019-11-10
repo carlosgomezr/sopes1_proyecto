@@ -2,6 +2,8 @@
   "name": "twitter-client-app",
   "description": "twitter-client-app",
   "main": "index.html",
+  "directory": "bower_components",
+
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "iron-icon":"PolymerElements/iron-icon#^1.0.0",
