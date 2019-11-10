@@ -33,3 +33,8 @@ var Publicacion = module.exports = mongoose.model('publicacion', publicacionSche
 module.exports.get = function(callback, limit){
     Publicacion.find(callback).limit(limit);
 }
+
+module.exports.getinfousuario = function(callback,nombreusuario){
+    console.log("se supone que voy a obtener la info del usuario: "+nombreusuario)
+    Publicacion.find({usuario:"juanr"},callback);
+} 

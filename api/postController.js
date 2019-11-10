@@ -34,8 +34,8 @@ exports.new = function (req, res, datos,socket) {
                 mensaje: 'No se registro la publicacion'
             });
         }
-        //socket.emit('newtwett',publicacion)
-        socket.broadcast.emit('newtwett',publicacion);
+        socket.emit('newtwett',publicacion)
+        //socket.broadcast.emit('newtwett',publicacion);
         res.json({
             estado: 'hecho',
             mensaje: 'se creo una nueva publicacion',
@@ -68,7 +68,7 @@ function getCategoria(texto) {
 exports.index = function(socket){
     console.log("index de postController")
     let r;
-    Publicacion.get(function(err, datos){
+    Publicacion.getinfousuario(function(err, datos){
         if(err){
             /*
             res.json({
@@ -86,11 +86,12 @@ exports.index = function(socket){
             datos: datos
         });
         */
+       console.log("datos:=============")
        console.log(datos)
        r= datos;
        socket.emit('ten10',datos);
-    });
-    
+    },"Byronjl");
+   
 
 };
 
@@ -98,6 +99,39 @@ exports.index = function(socket){
  * 
  * @param {Number} limite 
  */
+
+
+function getQueryForAUser(nombreusuario){
+    /**
+     * es un vector con las diferentes consultas y se compoorta
+     * como pipe and filters:
+     * consulta(registros, query[0])->consulta(resultado1, query[1])....
+     */
+    let query = [
+        {
+            $group : {
+                _id:"$categoria",
+                cantidad: {$sum:1}
+            }
+        },
+        {
+            $sort: {"cantidad": -1}
+        },
+        {
+            $limit: limite
+        },
+        {
+            $project: {
+                _id:false,
+                categoria: "$_id",
+                cantidad: "$cantidad"
+            }
+        }
+    ];
+
+    return query;
+}
+
 
 function getQueryCategoria(limite){
     /**
