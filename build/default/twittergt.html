@@ -28,7 +28,15 @@
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       const socket = io();
+      socket.emit('quiero10',"porfa..");
+      socket.on('ten10',(cb) =>{
+          console.log("respuesta de ten10:");
+          console.log(cb);
+      });
       socket.on('setinfo',(cb) =>{
+          console.log(cb);
+      });
+      socket.on('newtwett',(cb) =>{
           console.log(cb);
       });
     </script>
