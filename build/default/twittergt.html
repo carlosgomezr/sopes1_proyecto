@@ -28,17 +28,90 @@
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       const socket = io();
-      socket.emit('quiero10',"porfa..");
-      socket.on('ten10',(cb) =>{
-          console.log("respuesta de ten10:");
+      //Para recibir los ultimos 10 tweets creados de un solo
+      socket.on('recibir10',(cb) =>{
+          console.log("respuesta de recibir10:");
           console.log(cb);
       });
-      socket.on('setinfo',(cb) =>{
+      //Para recibir el ultimo tweet creado
+      socket.on('recibirUltimo',(cb) =>{
+          console.log("respuesta de recibirUltimo:");
           console.log(cb);
       });
-      socket.on('newtwett',(cb) =>{
+      //Para recibir el total de usuarios
+      socket.on('recibirTotalUsuarios',(cb) =>{
+          console.log("recibirTotalDeUsuarios");
           console.log(cb);
       });
+      //Para recibir el total de tweets
+      socket.on('recibirTotalTweets',(cb) =>{
+          console.log("recibirTotalTweets");
+          console.log(cb);
+      });
+      //Para recibir el total de categorias
+      socket.on('recibirTotalCategorias',(cb) =>{
+          console.log("recibirTotalCategorias:");
+          console.log(cb);
+      });
+      //Para recibir el usuario con mas tweets
+      socket.on('recibirTopUsuario',(cb) =>{
+          console.log("recibirTopUsuario:");
+          console.log(cb);
+      });
+      //Para recibir La categoria con mas tweets  
+      socket.on('recibirCategoriaTop',(cb) =>{
+          console.log("recibirCategoriaTop:");
+          console.log(cb);
+      });
+      
+          
+      
+      
+      /*
+      Despues de preparar todos los metodo para la recibida de datos
+      Se inicia a pedir la informacion
+      */
+      socket.emit('obtener10',"porfa..");
+      socket.emit('obtenerTotalUsuarios',"porfa..");
+      socket.emit('obtenerTotalTweets',"porfa..");
+      socket.emit('obtenerTotalCategorias',"porfa..");
+      socket.emit('obtenerTopUsuario',"porfa..");
+      socket.emit('obtenerCategoriaTop',"porfa..");
+      
+      
+      
+      /**
+      Estos metodos son los que reciben la info para las demas vistas..
+      */
+      //tweets de un usuario en especifico
+      socket.on('recibirTweetsOf',(cb) =>{
+        console.log("recibirtweets de un usuario..:");
+          console.log(cb);
+      });
+      //numero de tweets de un usuario en especifico
+      socket.on('recibirTotalTweetsOf',(cb) =>{
+          console.log("recibi TotalTweets de usuario:");
+          console.log(cb);
+      });
+      //tweets de una categoria en especifico
+      socket.on('recibirTweetsCat',(cb) =>{
+          console.log("recibi tweets de la categoria: ");
+          console.log(cb);
+      });
+      //numero de tweets de una categoria en especifico
+      socket.on('recibirTotalTweetsCat',(cb) =>{
+          console.log("recibi TotalTweets de categoria:");
+          console.log(cb);
+      });
+      /*
+      Asi se obtendria la info para las otras dos vistas
+      */
+      socket.emit('obtenerTweetsOfUser','marisol');
+      socket.emit('obtenerNumTweetsOfUser','marisol');
+      socket.emit('obtenerTweetsOfCat','usac');
+      socket.emit('obtenerNumTweetsOfCat','usac');
+      
+      
     </script>
   </footer>
 </html>

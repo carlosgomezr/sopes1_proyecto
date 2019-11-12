@@ -30,7 +30,7 @@ referenciaTiempo = None
 # -------------------------------------------
 
 class VentanaPrincipal:
-    def _init_(self, master):
+    def __init__(self, master):
         self.master = master
         master.title("SO1_Proyecto1")
 
@@ -156,7 +156,7 @@ class VentanaPrincipal:
         self.txt.delete(0.0, END)
         self.txt.insert(0.0, "")
         fl = filedialog.askopenfilename(initialdir="/", title="Select file",
-                                        filetypes=(("all files", "."), ("jpeg files", "*.jpg")))
+                                        filetypes=(("txt", ".txt"), ("jpeg files", "*.jpg")))
         if fl != '':
             text = self.readFile(fl)
             self.txt.insert(END, text)
@@ -190,7 +190,8 @@ class VentanaPrincipal:
         totalSolicitudes = int(self.spinSolicitudes.get())
         contadorSolicitudes = 0
         # --------------------------------------------------------
-        c = Clock(valorTimeout)
+        #c = Clock(valorTimeout)
+        c = Clock()
         c.start()
         for x in range(0, int(self.spinConcurrencia.get())):
             mythread = MyThread(name="[Hilo-{}]".format(str(x)))

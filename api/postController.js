@@ -7,7 +7,7 @@ Publicacion = require('./postModel')
  */
 
 exports.new = function (req, res, datos,socket) {
-
+    //NUEVO TWEET
     console.log("Voy a guardar un nuevo tweet");
     let publicacion = new Publicacion();
     publicacion.nombre = datos.nom;
@@ -42,6 +42,197 @@ exports.new = function (req, res, datos,socket) {
             data: publicacion
         });
     });
+    //TOTAL DE USUARIOS
+    let query = [
+        {
+            $group : {
+                _id: "$usuario",
+                suma : {$sum: 1}
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                usuario : {$sum: 1}
+            }
+        },
+        {
+            $project:{
+                _id: false,
+                usuario : "$usuario"
+            }
+        }
+    ]
+
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion usuarios"
+            });
+            */
+           console.log(err);
+           socket.emit('recibirTotalUsuarios',-777);
+        }
+
+        let usr = datos[0]? datos[0].usuario : 0;
+        socket.emit('recibirTotalUsuarios',usr);
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "la cantidad de usuarios es:",
+            datos: {
+                cantidad: usr
+            }
+        })
+        */
+    });
+    //TOTAL DE TWEETS
+    query = [
+        {
+            $group : {
+                _id: null,
+                suma : {$sum: 1}
+            }
+        },
+        {
+            $project:{
+                _id: false,
+                txt : "$suma"
+            }
+        }
+    ]
+
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion tweets"
+            });
+            */
+           console.log(err);
+           socket.emit('recibirTotalTweets',-777);
+        }
+
+        let txt = datos[0]? datos[0].txt : 0;
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "la cantidad de tweets es:",
+            datos: {
+                cantidad: txt
+            }
+        })
+        */
+       socket.emit('recibirTotalTweets',txt);
+        
+        
+    });
+    
+    //TOTAL DE CATEGORIAS
+    query = [
+        {
+            $group : {
+                _id: "$categoria",
+                suma : {$sum: 1}
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                categorias : {$sum: 1}
+            }
+        },
+        {
+            $project:{
+                _id: false,
+                categorias : "$categorias"
+            }
+        }
+    ]
+
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion categorias"
+            });
+            */
+           console.log(err)
+           socket.emit('recibirTotalCategorias',-777);
+
+        }
+
+        let categorias = datos[0]? datos[0].categorias: 0;
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "la cantidad de categorias es:",
+            datos: {
+                cantidad: categorias
+            }
+        })
+        */
+        socket.emit('recibirTotalCategorias',categorias);
+    });
+    //USUARIOS CON MAS TWEETS
+    query = getQueryUsuario(1);
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion usuario_top"
+            });
+            */
+           console.log(err);
+           socket.emit('recibirTopUsuario',-777);
+        }
+        let dato = datos[0]? datos[0] : {usuario:"no_user", cantidad: 0};
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "datos del usuario con tweets mas creados",
+            datos: {
+                usuario: dato.usuario,
+                publicaciones: dato.cantidad
+            }
+        });
+        */
+       socket.emit('recibirTopUsuario',{
+            usuario: dato.usuario,
+            publicaciones: dato.cantidad
+            }
+        );
+    }); 
+    //CATEGORIA CON MAS TWEETS
+    let query = getQueryCategoria(1);
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion categoria_top"
+            });
+            */
+           console.log("Error:")
+           console.log(err)
+        }
+        console.log(datos);
+        let categoria = datos[0]? datos[0] : {categoria: "no_categoria", cantidad: 0};
+        socket.emit('recibirCategoriaTop',categoria);
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "datos de la categoria mas utilizada",
+            datos: categoria
+        });
+        */
+       
+    });
 }
 
 /**
@@ -65,33 +256,128 @@ function getCategoria(texto) {
     return lst;
 }
 
-exports.index = function(socket){
+
+exports.tweetscat = function(cat,socket){
     console.log("index de postController")
-    let r;
-    Publicacion.getinfousuario(function(err, datos){
+    let query = [
+        {
+            $match:{categoria:cat}
+        },
+        {
+            $sort: {fecha_publicacion: -1}
+        },
+        {
+            $limit: 3
+        }
+        
+    ];
+    Publicacion.aggregate(query, function(err, datos){
         if(err){
             /*
             res.json({
-                estado: 'error',
-                mensaje: err
+                estado: "error",
+                mensaje: "Error en la funcion categoria_top"
             });
             */
-           console.log(err);
-           r = err;
+           console.log("Error:")
+           console.log(err)
         }
+        console.log(datos);
+        //let categoria = datos[0]? datos[0] : {categoria: "no_categoria", cantidad: 0};
+        socket.emit('recibirTweetsCat',datos);
         /*
         res.json({
-            estado: 'hecho',
-            mensaje: 'los registros son',
-            datos: datos
+            estado: "hecho",
+            mensaje: "datos de la categoria mas utilizada",
+            datos: categoria
         });
         */
-       console.log("datos:=============")
-       console.log(datos)
-       r= datos;
-       socket.emit('ten10',datos);
-    },"Byronjl");
+       
+    });
    
+
+};
+
+//-------------------------
+exports.indexusuario = function(nombreusuario,socket){
+    console.log("index de postController")
+    let query = [
+        {
+            $match:{usuario:nombreusuario}
+        },
+        {
+            $sort: {fecha_publicacion: -1}
+        },
+        {
+            $limit: 3
+        }
+        
+    ];
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion categoria_top"
+            });
+            */
+           console.log("Error:")
+           console.log(err)
+        }
+        console.log(datos);
+        //let categoria = datos[0]? datos[0] : {categoria: "no_categoria", cantidad: 0};
+        socket.emit('recibirTweetsOf',datos);
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "datos de la categoria mas utilizada",
+            datos: categoria
+        });
+        */
+       
+    });
+   
+
+};
+
+exports.index = function(socket){
+    console.log("index de postController")
+    let query = [
+        
+        {
+            $sort: {fecha_publicacion: -1}
+        },
+        {
+            $limit: 10
+        }
+        
+    ];
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion categoria_top"
+            });
+            */
+           console.log("Error:")
+           console.log(err)
+        }
+        console.log(datos);
+        //let categoria = datos[0]? datos[0] : {categoria: "no_categoria", cantidad: 0};
+        socket.emit('recibirCategoriaTop',datos);
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "datos de la categoria mas utilizada",
+            datos: categoria
+        });
+        */
+       
+    });
+
+  
+      
 
 };
 
@@ -140,6 +426,12 @@ function getQueryCategoria(limite){
      * consulta(registros, query[0])->consulta(resultado1, query[1])....
      */
     let query = [
+        {
+            $match:{
+                categoria: { $ne: "sin_categoria" }
+                
+            }
+        },
         {
             $group : {
                 _id:"$categoria",
@@ -191,31 +483,42 @@ exports.grafica_pie = function(req, res){
 /***
  * Esta función recupera la categoria que tiene mas tweets y la cantidad de estos
  */
-exports.categoria_top = function(req, res){
+exports.categoria_top = function(socket){
+    console.log("===CATEGORIA TOP+++");
+      
+    
     let query = getQueryCategoria(1);
     Publicacion.aggregate(query, function(err, datos){
         if(err){
+            /*
             res.json({
                 estado: "error",
                 mensaje: "Error en la funcion categoria_top"
             });
+            */
+           console.log("Error:")
+           console.log(err)
         }
-        
+        console.log(datos);
         let categoria = datos[0]? datos[0] : {categoria: "no_categoria", cantidad: 0};
-
+        socket.emit('recibirCategoriaTop',categoria);
+        /*
         res.json({
             estado: "hecho",
             mensaje: "datos de la categoria mas utilizada",
             datos: categoria
         });
-    }); 
+        */
+       
+    });
+     
 };
 
 /***
  * Esta funcion se encarga de consultar la cantidad de categorias
  * que se han agregado
  */
-exports.categorias = function(req, res){
+exports.categorias = function(socket){
     let query = [
         {
             $group : {
@@ -239,14 +542,19 @@ exports.categorias = function(req, res){
 
     Publicacion.aggregate(query, function(err, datos){
         if(err){
+            /*
             res.json({
                 estado: "error",
                 mensaje: "Error en la funcion categorias"
             });
+            */
+           console.log(err)
+           socket.emit('recibirTotalCategorias',-777);
+
         }
 
         let categorias = datos[0]? datos[0].categorias: 0;
-
+        /*
         res.json({
             estado: "hecho",
             mensaje: "la cantidad de categorias es:",
@@ -254,13 +562,16 @@ exports.categorias = function(req, res){
                 cantidad: categorias
             }
         })
+        */
+        socket.emit('recibirTotalCategorias',categorias);
     });
 };
 
 /**
  * Esta funcion obtendrá el query del total de usuarios
  */
-exports.getUsuarios = function(req, res){
+
+exports.getUsuarios = function(socket){
     let query = [
         {
             $group : {
@@ -284,14 +595,19 @@ exports.getUsuarios = function(req, res){
 
     Publicacion.aggregate(query, function(err, datos){
         if(err){
+            /*
             res.json({
                 estado: "error",
                 mensaje: "Error en la funcion usuarios"
             });
+            */
+           console.log(err);
+           socket.emit('recibirTotalUsuarios',-777);
         }
 
         let usr = datos[0]? datos[0].usuario : 0;
-
+        socket.emit('recibirTotalUsuarios',usr);
+        /*
         res.json({
             estado: "hecho",
             mensaje: "la cantidad de usuarios es:",
@@ -299,13 +615,114 @@ exports.getUsuarios = function(req, res){
                 cantidad: usr
             }
         })
+        */
+    });
+}
+
+
+/**
+ * Esta función obtendrá el query del total de tweets de un usuario
+ */
+exports.numtweetscat = function(cat,socket){
+    let query = [
+        {
+            $match:{categoria:cat}
+        },
+        {
+            $group : {
+                _id: null,
+                suma : {$sum: 1}
+            }
+        },
+        {
+            $project:{
+                _id: false,
+                txt : "$suma"
+            }
+        }
+    ]
+
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion tweets"
+            });
+            */
+           console.log(err);
+           socket.emit('recibirTotalTweetCat',-777);
+        }
+
+        let txt = datos[0]? datos[0].txt : 0;
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "la cantidad de tweets es:",
+            datos: {
+                cantidad: txt
+            }
+        })
+        */
+       socket.emit('recibirTotalTweetsCat',txt);
+        
+        
+    });
+}
+/**
+ * Esta función obtendrá el query del total de tweets de un usuario
+ */
+exports.numtweetsusuario = function(username,socket){
+    let query = [
+        {
+            $match:{usuario:username}
+        },
+        {
+            $group : {
+                _id: null,
+                suma : {$sum: 1}
+            }
+        },
+        {
+            $project:{
+                _id: false,
+                txt : "$suma"
+            }
+        }
+    ]
+
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion tweets"
+            });
+            */
+           console.log(err);
+           socket.emit('recibirTotalTweetsOf',-777);
+        }
+
+        let txt = datos[0]? datos[0].txt : 0;
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "la cantidad de tweets es:",
+            datos: {
+                cantidad: txt
+            }
+        })
+        */
+       socket.emit('recibirTotalTweetsOf',txt);
+        
+        
     });
 }
 
 /**
  * Esta función obtendrá el query del total de tweets
  */
-exports.getTweets = function(req, res){
+exports.getTweets = function(socket){
     let query = [
         {
             $group : {
@@ -323,14 +740,18 @@ exports.getTweets = function(req, res){
 
     Publicacion.aggregate(query, function(err, datos){
         if(err){
+            /*
             res.json({
                 estado: "error",
                 mensaje: "Error en la funcion tweets"
             });
+            */
+           console.log(err);
+           socket.emit('recibirTotalTweets',-777);
         }
 
         let txt = datos[0]? datos[0].txt : 0;
-
+        /*
         res.json({
             estado: "hecho",
             mensaje: "la cantidad de tweets es:",
@@ -338,6 +759,61 @@ exports.getTweets = function(req, res){
                 cantidad: txt
             }
         })
+        */
+       socket.emit('recibirTotalTweets',txt);
+        
+        
+    });
+}
+
+/**
+ * Esta función obtendrá el query del total de tweets de un usuario
+ */
+exports.getTweetsOf = function(socket,user){
+    let query = [
+        {
+            $match:{
+                usuario:user
+            }
+        }
+        ,{
+            $group : {
+                _id: null,
+                suma : {$sum: 1}
+            }
+        },
+        {
+            $project:{
+                _id: false,
+                txt : "$suma"
+            }
+        }
+    ]
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion tweets"
+            });
+            */
+           console.log(err);
+           socket.emit('recibirTotalTweetsOf',-777);
+        }
+
+        let txt = datos[0]? datos[0].txt : 0;
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "la cantidad de tweets es:",
+            datos: {
+                cantidad: txt
+            }
+        })
+        */
+       socket.emit('recibirTotalTweetsOf',txt);
+        
+        
     });
 }
 
@@ -378,16 +854,21 @@ function getQueryUsuario(limite){
 /**
  * Obtiene los tweets más creados por el usuario
  */
-exports.usuario_top = function(req, res){
+exports.usuario_top = function(socket){
     let query = getQueryUsuario(1);
     Publicacion.aggregate(query, function(err, datos){
         if(err){
+            /*
             res.json({
                 estado: "error",
                 mensaje: "Error en la funcion usuario_top"
             });
+            */
+           console.log(err);
+           socket.emit('recibirTopUsuario',-777);
         }
         let dato = datos[0]? datos[0] : {usuario:"no_user", cantidad: 0};
+        /*
         res.json({
             estado: "hecho",
             mensaje: "datos del usuario con tweets mas creados",
@@ -396,6 +877,12 @@ exports.usuario_top = function(req, res){
                 publicaciones: dato.cantidad
             }
         });
+        */
+       socket.emit('recibirTopUsuario',{
+            usuario: dato.usuario,
+            publicaciones: dato.cantidad
+            }
+        );
     }); 
 }
 

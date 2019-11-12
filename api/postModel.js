@@ -36,5 +36,38 @@ module.exports.get = function(callback, limit){
 
 module.exports.getinfousuario = function(callback,nombreusuario){
     console.log("se supone que voy a obtener la info del usuario: "+nombreusuario)
-    Publicacion.find({usuario:"juanr"},callback);
-} 
+    Publicacion.find({usuario:nombreusuario},callback);
+}
+module.exports.getrealcategories = function(callback){
+    /*
+    let query = [
+        {
+            $not:{
+                categoria:"sin_categoria"
+            }
+        },
+        {
+            $group : {
+                _id:"$categoria",
+                cantidad: {$sum:1}
+            }
+        },
+        {
+            $sort: {"cantidad": -1}
+        },
+        {
+            $limit: 1
+        },
+        {
+            $project: {
+                _id:false,
+                categoria: "$_id",
+                cantidad: "$cantidad"
+            }
+        }
+    ];
+
+    Publicacion.find({categoria:{$ne:"sin_categoria"}},callback).aggregate(query);
+    */
+}
+ 
