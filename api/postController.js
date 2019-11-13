@@ -6,7 +6,7 @@ Publicacion = require('./postModel')
  * 
  */
 
-exports.new = function (req, res, datos,socket) {
+exports.new = function (req, res,datos,socket) {
     //NUEVO TWEET
     console.log("Voy a guardar un nuevo tweet");
     let publicacion = new Publicacion();
@@ -34,7 +34,7 @@ exports.new = function (req, res, datos,socket) {
                 mensaje: 'No se registro la publicacion'
             });
         }
-        socket.emit('newtwett',publicacion)
+        socket.emit('recibirUltimo',publicacion)
         //socket.broadcast.emit('newtwett',publicacion);
         res.json({
             estado: 'hecho',
@@ -209,7 +209,7 @@ exports.new = function (req, res, datos,socket) {
         );
     }); 
     //CATEGORIA CON MAS TWEETS
-    let query = getQueryCategoria(1);
+    query = getQueryCategoria(1);
     Publicacion.aggregate(query, function(err, datos){
         if(err){
             /*
@@ -362,10 +362,11 @@ exports.index = function(socket){
             */
            console.log("Error:")
            console.log(err)
+           socket.emit('recibir10',-777);
         }
         console.log(datos);
         //let categoria = datos[0]? datos[0] : {categoria: "no_categoria", cantidad: 0};
-        socket.emit('recibirCategoriaTop',datos);
+        socket.emit('recibir10',datos);
         /*
         res.json({
             estado: "hecho",

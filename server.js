@@ -9,7 +9,8 @@ var cadena_conexion = "mongodb+srv://admin:Birlolo1100@sopes1-ym3ze.gcp.mongodb.
 //jajjjajaja
 
 app.get('/', async (req, res) => {
-  postController.new(req, res, req.query,io);
+  console.log(req.query);
+  postController.new(req,res,io);
 })
 /*
 app.get('/', async (req, res) => {
@@ -42,14 +43,14 @@ io.on('connection', (socket) => {
   socket.on('obtenerTotalUsuarios', () => {
     console.log("Me cayo la peticion de OBTENER USUARIOS");
     let t10 = postController.getUsuarios(io);
-    console.log(t10)
+    //console.log(t10)
     //socket.emit('ten10',t10);
 
   });
   //Los totales de usuarios se mandan cada ves que se ingrese un
   //tweet con nuevos usuarios
   //=======================RecibirTotaldeTweets=============
-  socket.on('obtenerTotaldeTweets', () => {
+  socket.on('obtenerTotalTweets', () => {
     console.log("Me cayo la peticion de OBTENER TOTAL DE TWEETS");
     let t10 = postController.getTweets(io);
     console.log(t10)
