@@ -46,7 +46,7 @@
 			<paper-toolbar id="toolbar">&gt;
 				<paper-icon-button icon="menu" on-tap="togglePanel" paper-drawer-toggle=""></paper-icon-button>
 				<div class="title"><span style="color: gray; font-weight: bold; font-size: 24;">Dashboard</span></div>
-				<paper-icon-button on-tap="ready" icon="refresh"></paper-icon-button>
+				<paper-icon-button on-tap="refresh" icon="refresh"></paper-icon-button>
 			</paper-toolbar>
 			<div style="margin-top: 35px;">
 				<center>
@@ -65,18 +65,30 @@
 				<tr>
 					<td rowspan="6" style="width: 30%; min-width: 300px;">
 						<div>
-							<iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold" lower-threshold="10">
+							<!--iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold" lower-threshold="1">
 								<iron-list as="item" scroll-target="html" id="tweetList">
 									<template>
 										<twitter-tweet item="[[item]]"></twitter-tweet>
 									</template>
 								</iron-list>
-								<div id="msgLoad">
-									<center>
-										No hay mas Tweets
-									</center>
-								</div>
-							</iron-scroll-threshold>
+
+							</iron-scroll-threshold-->
+							<twitter-tweet id="tweet0"></twitter-tweet>
+							<twitter-tweet id="tweet1"></twitter-tweet>
+							<twitter-tweet id="tweet2"></twitter-tweet>
+							<twitter-tweet id="tweet3"></twitter-tweet>
+							<twitter-tweet id="tweet4"></twitter-tweet>
+							<twitter-tweet id="tweet5"></twitter-tweet>
+							<twitter-tweet id="tweet6"></twitter-tweet>
+							<twitter-tweet id="tweet7"></twitter-tweet>
+							<twitter-tweet id="tweet8"></twitter-tweet>
+							<twitter-tweet id="tweet9"></twitter-tweet>
+							
+							<div id="msgLoad">
+								<center>
+									No hay mas Tweets
+								</center>
+							</div>
 						</div>
 						
 					</td>
@@ -126,7 +138,10 @@
 	</template>
 	<script>Polymer({
   is: 'twitter-dashboard',
-  listeners: {},
+  listeners: {
+  	tagQueryDashboard: 'tagQueryDashboard',
+  	userQueryDashboard: 'userQueryDashboard'
+  },
   properties: {
     bodyRequest: {
       type: String,
@@ -142,49 +157,89 @@
     }
   },
   ready: function () {
-    array = [{
-      nombre: "Carlos G",
-      alias: "@carlos001",
-      tweet: "Este es mi primer #Tweet"
-    }, {
-      nombre: "Hans G",
-      alias: "@hansSolo",
-      tweet: "Es dinamita pura #DAAAM"
-    }, {
-      nombre: "Fernando P",
-      alias: "@ferchos_ama",
-      tweet: "nyco nyco neeeee~~~"
-    }, {
-      nombre: "Bot 1",
-      alias: "@bot1",
-      tweet: "No soy un boot #1"
-    }, {
-      nombre: "Bot 2",
-      alias: "@bot2",
-      tweet: "No soy un boot #2"
-    }, {
-      nombre: "Bot 3",
-      alias: "@bot3",
-      tweet: "No soy un boot #3"
-    }, {
-      nombre: "Bot 4",
-      alias: "@bot4",
-      tweet: "No soy un boot #4"
-    }, {
-      nombre: "Bot 5",
-      alias: "@bot5",
-      tweet: "No soy un boot #5"
-    }, {
-      nombre: "Bot 6",
-      alias: "@bot6",
-      tweet: "No soy un boot #6"
-    }, {
-      nombre: "Bot 7",
-      alias: "@bot7",
-      tweet: "No soy un boot #7"
-    }];
-    this.$.tweetList.items = array;
-    this.$.tweetList.notifyResize();
+	APP.frontTweets = [];
+	APP.frontTweets.push(this.$.tweet0);
+	APP.frontTweets.push(this.$.tweet1);
+	APP.frontTweets.push(this.$.tweet2);
+	APP.frontTweets.push(this.$.tweet3);
+	APP.frontTweets.push(this.$.tweet4);
+	APP.frontTweets.push(this.$.tweet5);
+	APP.frontTweets.push(this.$.tweet6);
+	APP.frontTweets.push(this.$.tweet7);
+	APP.frontTweets.push(this.$.tweet8);
+	APP.frontTweets.push(this.$.tweet9);
+/*    for(tweet in APP.tweets){
+    	this.$[idElement].item = tweet;	
+    	this.$[idElement].hidden = false;
+    }
+*/
+	for(tweet in APP.frontTweets){
+  		APP.frontTweets[tweet].hidden = true;
+  	}
+  
+  	for(tweet in APP.tweets){
+  		APP.frontTweets[tweet].hidden = false;
+  		APP.frontTweets[tweet].item = APP.tweets[tweet];
+  	}
+  },
+  refresh: function () {
+   	console.log("refresh " + JSON.stringify(APP.tweets));
+  	console.log("API.tweets " + APP.tweets.length);
+  	for(tweet in APP.frontTweets){
+  		APP.frontTweets[tweet].hidden = true;
+  	}
+  
+  	for(tweet in APP.tweets){
+  		APP.frontTweets[tweet].hidden = false;
+  		APP.frontTweets[tweet].item = APP.tweets[tweet];
+  	}
+  	/*
+	if(APP.tweets.length >= 1){
+		this.$.tweet0.hidden = false;
+		this.$.tweet0.item = APP.tweets[0];
+	}
+	if(APP.tweets.length >= 2){
+		this.$.tweet1.hidden = false;
+		this.$.tweet1.item = APP.tweets[1];
+	}
+	if(APP.tweets.length >= 3){
+		this.$.tweet2.hidden = false;
+		this.$.tweet2.item = APP.tweets[2];
+	}
+	if(APP.tweets.length >= 4){
+		this.$.tweet3.hidden = false;
+		this.$.tweet3.item = APP.tweets[3];
+	}
+	if(APP.tweets.length >= 5){
+		this.$.tweet4.hidden = false;
+		this.$.tweet4.item = APP.tweets[4];
+	}
+	if(APP.tweets.length >= 6){
+		this.$.tweet5.hidden = false;
+		this.$.tweet5.item = APP.tweets[5];
+	}
+	if(APP.tweets.length >= 7){
+		this.$.tweet6.hidden = false;
+		this.$.tweet6.item = APP.tweets[6];
+	}
+	if(APP.tweets.length >= 8){
+		this.$.tweet7.hidden = false;
+		this.$.tweet7.item = APP.tweets[7];
+	}
+	if(APP.tweets.length >= 9){
+		this.$.tweet8.hidden = false;
+		this.$.tweet8.item = APP.tweets[8];
+	}
+	if(APP.tweets.length >= 10){
+		this.$.tweet9.hidden = false;
+		this.$.tweet9.item = APP.tweets[9];
+	}*/
+  },
+  tagQueryDashboard: function(e){
+  	this.fire('tagQueryMain', e.detail);
+  },
+  userQueryDashboard: function(e){
+  	this.fire('userQueryMain', e.detail);
   }
 });</script>
 </dom-module>

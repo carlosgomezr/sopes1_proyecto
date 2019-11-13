@@ -44,7 +44,7 @@
 		<div>
 			<paper-card on-tap="select_Lesson" background="../img/background.png">
 				<div>
-					<p><span style="font-weight: 700;">Tweets: </span> {{ item.tweets }} 
+					<p><span style="font-weight: 700;">Tweets: </span> <span id="totalDeCategoriasEspecifico">0</span> 
 				</p></div>
 			</paper-card>
 		</div>
@@ -52,6 +52,9 @@
 	</template>
 	<script>Polymer({
   //--------------------   POLYMER   -----------------------------------
-  is: 'twitter-tag-info'
+  	is: 'twitter-tag-info',
+  	ready: function(){
+  			APP.totalDeCategoriasEspecifico = this.$.totalDeCategoriasEspecifico;
+  		}
 });</script>
 </dom-module>

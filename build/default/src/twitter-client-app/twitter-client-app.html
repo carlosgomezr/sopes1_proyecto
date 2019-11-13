@@ -53,16 +53,16 @@
         </paper-toolbar>
         <paper-menu selected="{{selected}}" style="background-color: #81d4fa; color: #FFFFFF;">
             <paper-icon-item><iron-icon icon="dashboard" item-icon=""></iron-icon>Dashboard</paper-icon-item>
-            <paper-icon-item><iron-icon icon="account-circle" item-icon=""></iron-icon>Usuarios</paper-icon-item>
-            <paper-icon-item><iron-icon icon="chrome-reader-mode" item-icon=""></iron-icon>Tags</paper-icon-item>
+            <!--paper-icon-item><iron-icon icon="account-circle" item-icon=""></iron-icon>Usuarios</paper-icon-item>
+            <paper-icon-item><iron-icon icon="chrome-reader-mode" item-icon=""></iron-icon>Tags</paper-icon-item-->
         </paper-menu>
         <!--paper-icon-item on-tap="disconnect" style="border-top: 1px solid #d8d8d8;"><iron-icon icon="power-settings-new" item-icon></iron-icon>Desconectar</paper-icon-item-->
       </paper-header-panel>
       <paper-header-panel main="">
         <iron-pages selected="{{selected}}" id="pages">
           <twitter-dashboard></twitter-dashboard>
-          <twitter-user></twitter-user>
-          <twitter-tag></twitter-tag>
+          <twitter-user id="userTwitter"></twitter-user>
+          <twitter-tag id="tagTwitter"></twitter-tag>
         </iron-pages>
         <div class="second-screens" hidden=""></div>
       </paper-header-panel>
@@ -92,7 +92,9 @@
   listeners: {
     'togglePanel': 'closeDrawer',
     'viewMenu': 'viewMenu',
-    'hiddenMenu': 'hiddenMenu'
+    'hiddenMenu': 'hiddenMenu',
+    'tagQueryMain': 'tagQueryMain',
+    'userQueryMain': 'userQueryMain' 
   },
   _selectedObserver: function (n, o) {
     /*if (n==2){
@@ -161,6 +163,22 @@
     };
      xmlhttp.send(strRequest);
     console.log("consultando FIN... X3");*/
+  },
+  tagQueryMain: function(e){
+    console.log('tagQuery', e.detail);
+    this.selected = 2;
+    this.$.tagTwitter.title = e.detail;
+    APP.categoria = e.detail;
+    socket.emit('obtenerTweetsOfCat', APP.categoria);
+    socket.emit('obtenerNumTweetsOfCat', APP.categoria);
+  },
+  userQueryMain: function(e){
+    console.log('userQuery', e.detail);
+    this.selected = 1;
+    this.$.userTwitter.title = e.detail;
+    APP.usuario = e.detail;
+    socket.emit('obtenerTweetsOfUser', APP.usuario);
+    socket.emit('obtenerNumTweetsOfUser', APP.usuario);
   }
 });</script>
 </dom-module>

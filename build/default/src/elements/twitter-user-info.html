@@ -44,9 +44,9 @@
 		<div>
 			<paper-card on-tap="select_Lesson" background="../img/background.png">
 				<div>
-					<p><span style="font-weight: 700;">Alias: </span> {{ item.alias }} 
-					</p><p><span style="font-weight: 700;">Nombre: </span> {{ item.nombre }} 
-					</p><p><span style="font-weight: 700;">Tweets: </span> {{ item.tweets }}
+					<p><span style="font-weight: 700;">Alias: </span> [[alias]]
+					</p><p><span style="font-weight: 700;">Nombre: </span> [[nombre]]
+					</p><p><span style="font-weight: 700;">Tweets: </span> <span id="totalDeTweetsPorUsuario">0</span> 
 				</p></div>
 			</paper-card>
 		</div>
@@ -54,6 +54,11 @@
 	</template>
 	<script>Polymer({
   //--------------------   POLYMER   -----------------------------------
-  is: 'twitter-user-info'
+  	is: 'twitter-user-info',
+  	ready: function(){
+		APP.aliasUsuario = this.$.aliasUsuario;
+		APP.nombreUsuario = this.$.nombreUsuario;
+		APP.totalDeTweetsPorUsuario = this.$.totalDeTweetsPorUsuario;
+	}
 });</script>
 </dom-module>

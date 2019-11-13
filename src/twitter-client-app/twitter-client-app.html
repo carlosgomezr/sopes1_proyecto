@@ -94,7 +94,7 @@
       listeners: {
         'togglePanel': 'closeDrawer',
         'viewMenu': 'viewMenu',
-        'hiddenMenu': 'hiddenMenu'  
+        'hiddenMenu': 'hiddenMenu'
       },
       _selectedObserver: function(n, o){
         /*if (n==2){
@@ -167,6 +167,12 @@
         xmlhttp.send(strRequest);
         console.log("consultando FIN... X3");*/
         
+      },
+      tagQueryMain: function(){
+        console.log('tagQuery');
+      },
+      userQueryMain: function(){
+        console.log('userQuery');
       }
     });
   </script>

@@ -52,8 +52,8 @@
 				<table class="egt">
 				<tbody><tr>
 					<td>
-						<h2>Información Cetegoría</h2>
-						<twitter-tag-info></twitter-tag-info>
+						<h2>Información Cetegoría [[title]]</h2>
+						<twitter-tag-info id="twitter_tag_info"></twitter-tag-info>
 					</td>
 					<td rowspan="6" style="width: 2%;">
 						
@@ -66,7 +66,7 @@
 					<td rowspan="6" style="width: 30%; min-width: 300px;">
 						<h2>Últimos 3 Tweets</h2>
 						<div>
-							<iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold" lower-threshold="10">
+							<!--iron-scroll-threshold on-lower-threshold="loadMoreData" id="threshold" lower-threshold="10">
 								<iron-list as="item" scroll-target="html" id="tweetList">
 									<template>
 										<twitter-tweet item="[[item]]"></twitter-tweet>
@@ -77,7 +77,11 @@
 										No hay mas Tweets
 									</center>
 								</div>
-							</iron-scroll-threshold>
+							</iron-scroll-threshold-->
+							<twitter-tweet id="tweet0"></twitter-tweet>
+							<twitter-tweet id="tweet1"></twitter-tweet>
+							<twitter-tweet id="tweet2"></twitter-tweet>
+							No hay mas Tweets
 						</div>
 						
 					</td>
@@ -110,21 +114,23 @@
     }
   },
   ready: function () {
-    array = [{
-      nombre: "Carlos G",
-      alias: "@carlos001",
-      tweet: "Este es mi primer #Tweet"
-    }, {
-      nombre: "Hans G",
-      alias: "@hansSolo",
-      tweet: "Es dinamita pura #DAAAM"
-    }, {
-      nombre: "Fernando P",
-      alias: "@ferchos_ama",
-      tweet: "nyco nyco neeeee~~~"
-    }];
-    this.$.tweetList.items = array;
-    this.$.tweetList.notifyResize();
+	APP.frontTagTweets = [];
+	APP.frontTagTweets.push(this.$.tweet0);
+	APP.frontTagTweets.push(this.$.tweet1);
+	APP.frontTagTweets.push(this.$.tweet2);
+/*    for(tweet in APP.tweets){
+    	this.$[idElement].item = tweet;	
+    	this.$[idElement].hidden = false;
+    }
+*/
+	for(tweet in APP.frontTagTweets){
+  		APP.frontTagTweets[tweet].hidden = true;
+  	}
+  
+  	for(tweet in APP.tagTweets){
+  		APP.frontTagTweets[tweet].hidden = false;
+  		APP.frontTagTweets[tweet].item = APP.tagTweets[tweet];
+  	}
   }
 });</script>
 </dom-module>

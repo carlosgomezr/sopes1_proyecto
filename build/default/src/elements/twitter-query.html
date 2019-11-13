@@ -47,12 +47,12 @@
 
 		<!-- _________________  PAPER CARD  _________________-->
 		<div>
-			<paper-card on-tap="select_Lesson" background="../img/background.png">
+			<paper-card background="../img/background.png">
 				<div>
-					<p><span style="font-weight: 700;">Categoría</span></p><paper-input></paper-input>
-					<paper-button raised="">Consultar Categoría</paper-button>
-					<p><span style="font-weight: 700;">Usuario</span></p><paper-input></paper-input> 
-					<paper-button raised="">Consultar Categoría</paper-button>
+					<p><span style="font-weight: 700;">Categoría</span></p><paper-input id='tag'></paper-input>
+					<paper-button raised="" on-tap="tagQuery">Consultar Categoría</paper-button>
+					<p><span style="font-weight: 700;">Usuario</span></p><paper-input id='user'></paper-input> 
+					<paper-button raised="" on-tap="userQuery">Consultar Usuario</paper-button>
 				</div>
 			</paper-card>
 		</div>
@@ -68,6 +68,14 @@
   infoTag: {
     type: String,
     value: 1000
+  },
+  tagQuery: function(){
+  	console.log('TAG ' + this.$.tag.value);
+  	this.fire('tagQueryDashboard', this.$.tag.value);
+  },
+  userQuery: function(){
+  	console.log('USER ' + this.$.user.value);
+  	this.fire('userQueryDashboard', this.$.user.value);
   }
 });</script>
 </dom-module>

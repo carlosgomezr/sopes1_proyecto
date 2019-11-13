@@ -44,16 +44,25 @@
 		<div>
 			<paper-card on-tap="select_Lesson" background="../img/background.png">
 				<div>
-					<p><span style="font-weight: 700;">Total de Usuarios: </span> {{ item.totalDeUsuarios }} 
-					</p><p><span style="font-weight: 700;">Total de Tweets: </span> {{ item.totalDeTweets }} 
-					</p><p><span style="font-weight: 700;">Total categorías: </span> {{ item.totalDeCategorias }}
+					<p><span style="font-weight: 700;">Total de Usuarios: </span>
+					<span id="totalDeUsuarios">0</span>
+					</p><p><span style="font-weight: 700;">Total de Tweets: </span>
+					<span id="totalDeTweets">0</span> 
+					</p><p><span style="font-weight: 700;">Total categorías: </span> <span id="totalDeCategorias">0</span>
 				</p></div>
 			</paper-card>
 		</div>
 		
 	</template>
 	<script>Polymer({
-  //--------------------   POLYMER   -----------------------------------
-  is: 'twitter-info'
-});</script>
+  		//--------------------   POLYMER   -----------------------------------
+  		is: 'twitter-info',
+  		ready: function(){
+  			APP.totalDeUsuarios = this.$.totalDeUsuarios;
+  			APP.totalDeTweets = this.$.totalDeTweets;
+  			APP.totalDeCategorias = this.$.totalDeCategorias;
+  		}
+	}
+
+);</script>
 </dom-module>
