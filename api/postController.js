@@ -34,7 +34,7 @@ exports.new = function (req, res,datos,socket) {
                 mensaje: 'No se registro la publicacion'
             });
         }
-        socket.emit('recibirUltimo',publicacion)
+        //socket.emit('recibirUltimo',publicacion)
         //socket.broadcast.emit('newtwett',publicacion);
         res.json({
             estado: 'hecho',
@@ -42,8 +42,43 @@ exports.new = function (req, res,datos,socket) {
             data: publicacion
         });
     });
-    //TOTAL DE USUARIOS
+    //NUEVOS ULTIMOS 10 TWEETS
     let query = [
+        
+        {
+            $sort: {fecha_publicacion: -1}
+        },
+        {
+            $limit: 10
+        }
+        
+    ];
+    Publicacion.aggregate(query, function(err, datos){
+        if(err){
+            /*
+            res.json({
+                estado: "error",
+                mensaje: "Error en la funcion categoria_top"
+            });
+            */
+           console.log("Error:")
+           console.log(err)
+           socket.emit('recibir10',-777);
+        }
+        console.log(datos);
+        //let categoria = datos[0]? datos[0] : {categoria: "no_categoria", cantidad: 0};
+        socket.emit('recibir10',datos);
+        /*
+        res.json({
+            estado: "hecho",
+            mensaje: "datos de la categoria mas utilizada",
+            datos: categoria
+        });
+        */
+       
+    });
+    //TOTAL DE USUARIOS
+    query = [
         {
             $group : {
                 _id: "$usuario",
