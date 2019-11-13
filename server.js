@@ -10,7 +10,7 @@ var cadena_conexion = "mongodb+srv://admin:Birlolo1100@sopes1-ym3ze.gcp.mongodb.
 
 app.get('/', async (req, res) => {
   console.log(req.query);
-  postController.new(req,res,io);
+  postController.new(req,res,req.query,io);
 })
 /*
 app.get('/', async (req, res) => {
