@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sopes 1</title>
+    <link rel="stylesheet" href="../bootstrap.css">
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <script type="text/javascript" src="../smoothie.js"></script>
+    <script type="text/javascript">
+var valor=0;
+var valor2=0;
+      // Randomly add a data point every 500ms
+      var random = new TimeSeries();
+      var random2 = new TimeSeries();
+      setInterval(function() {
+      loadDoc();
+      if(valor!=0){
+        random.append(new Date().getTime(), valor);
+        random2.append(new Date().getTime(), valor2);
+      }
+     document.getElementById("demo").innerHTML = "Uso de CPU: "+valor;
+     document.getElementById("demo3").innerHTML = "Porcentaje de RAM: "+valor2;
+      }, 500);
+
+      function createTimeline() {
+        var chart = new SmoothieChart({responsive: true});
+        chart.addTimeSeries(random, { strokeStyle: 'rgba(0, 255, 0, 1)', fillStyle: 'rgba(0, 255, 0, 0.2)', lineWidth: 4 });
+        chart.streamTo(document.getElementById("chart"), 500);
+        var chart2 = new SmoothieChart({responsive: true});
+        chart2.addTimeSeries(random2, { strokeStyle: 'rgba(0, 255, 0, 1)', fillStyle: 'rgba(0, 255, 0, 0.2)', lineWidth: 4 });
+        chart2.streamTo(document.getElementById("chart2"), 500);
+      }
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4) {
+      var obj = JSON.parse(this.responseText); 
+      valor=obj.PorcentajeCPU
+      valor2=obj.PorcentajeMEM
+      document.getElementById("demo2").innerHTML = "Total de RAM: "+obj.Total;
+          }
+  };
+  xhttp.open("GET", "/ObtenerCPU", true);
+  xhttp.send();
+}
+    </script>
+    <body onload="createTimeline()">
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary" style="">
+      <div class="container">
+        <a href="google.com" class="navbar-brand">SOPES 1</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" style="">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </div>
+    <br><br><br><br><br>
+ <center><p id="demo">Uso de CPU: </p>
+  <canvas id="chart" style="width:70%; height:150px"></canvas>
+ <p id="demo2">Total de RAM: </p> 
+ <p id="demo3">Porcentaje de RAM: </p>
+   <canvas id="chart2" style="width:70%; height:150px"></canvas></center>
+  </body>
+</html>
