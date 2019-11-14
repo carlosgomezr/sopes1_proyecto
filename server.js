@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 var cadena_conexion = "mongodb+srv://admin:Birlolo1100@sopes1-ym3ze.gcp.mongodb.net/test?retryWrites=true&w=majority"
 //jajjjajaja
 
-app.get('/', async (req, res) => {
+app.get('/new', async (req, res) => {
   console.log(req.query);
   postController.new(req,res,req.query,io);
 })
